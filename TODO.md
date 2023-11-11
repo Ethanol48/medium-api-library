@@ -3,4 +3,12 @@
 ## TODO
 
 - Create script to Download images to local filesystem
-- Containerized the code
+
+- Add full functionality of Articles
+  - [x] Download Markdown File
+  - [ ] Download HTML File
+  - [ ] Download the images from articles
+
+-  API
+  - [ ] API it-self 
+  - [ ] Create routes
