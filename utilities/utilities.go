@@ -25,9 +25,9 @@ func TrimMoreThanOneSpace(s string) string {
 }
 
 // creates an http server for testing purposes
-func SpinUp() {
+func SpinUp(path string) {
 	// Set the directory to serve.
-	fs := http.FileServer(http.Dir("html"))
+	fs := http.FileServer(http.Dir(path))
 
 	// Handle all requests by serving a file of the same name.
 	http.Handle("/", fs)

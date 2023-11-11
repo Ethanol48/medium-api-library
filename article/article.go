@@ -1,8 +1,8 @@
 package article
 
 import (
-	"medium-api/elements"
-	"medium-api/utilities"
+	"github.com/Ethanol48/medium-api/elements"
+	"github.com/Ethanol48/medium-api/utilities"
 
 	"github.com/gocolly/colly"
 )

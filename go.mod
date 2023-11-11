@@ -1,4 +1,4 @@
-module medium-api
+module github.com/Ethanol48/medium-api
 
 go 1.20
 

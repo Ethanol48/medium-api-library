@@ -3,9 +3,10 @@ package elements
 import (
 	"errors"
 	"fmt"
-	"medium-api/utilities"
 	"os"
 	"strings"
+
+	"github.com/Ethanol48/medium-api/utilities"
 
 	"github.com/gocolly/colly"
 )
@@ -186,12 +187,15 @@ func (a Article) ToMarkdown() string {
 	return sb.String()
 }
 
-func (a Article) ToMarkdownFile(filename string, path string) {
-	err := os.WriteFile("tmp/Article.md", []byte(a.ToMarkdown()), 0644) // 0644 is a common permission setting allowing reading for everyone and full write access to the owner of the file.
+func (a Article) ToMarkdownFile(path string) {
+
+	err := os.WriteFile(path, []byte(a.ToMarkdown()), 0644) // 0644 is a common permission setting allowing reading for everyone and full write access to the owner of the file.
 	if err != nil {
 		// Handle the error here
-		fmt.Println("Error writing to file:", err)
+		fmt.Println("Error writing to file: ", err)
 	}
+
+	fmt.Println("File created at: ", path)
 }
 
 func createElement(elem *colly.HTMLElement) (Element, error) {
