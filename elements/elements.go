@@ -114,7 +114,7 @@ func (p P) ToMarkdown() string {
 func (i Image) ToMarkdown() string {
 	var sb strings.Builder
 
-	lin := i.Base + i.Id
+	lin := i.Base + "/" + i.Id
 
 	sb.WriteString(fmt.Sprintf("![%s](%s)", i.Alt, lin))
 	return sb.String()
@@ -163,6 +163,7 @@ func (l List) ToMarkdown() string {
 		} else {
 			sb.WriteString(fmt.Sprintf("- %s", v))
 		}
+		sb.WriteString("\n")
 	}
 
 	return sb.String()
@@ -177,7 +178,7 @@ func (a Article) ToMarkdown() string {
 
 	for _, v := range a.Content {
 		sb.WriteString(v.ToMarkdown())
-		sb.WriteString("\n")
+		sb.WriteString("\n\n")
 
 	}
 

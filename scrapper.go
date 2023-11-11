@@ -50,6 +50,7 @@ func main() {
 		permElems = append(permElems, "h3")
 		permElems = append(permElems, "ul")
 		permElems = append(permElems, "ol")
+		permElems = append(permElems, "p")
 		permElems = append(permElems, "li")
 		permElems = append(permElems, "img")
 
