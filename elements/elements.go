@@ -4,12 +4,22 @@ import (
 	"errors"
 	"fmt"
 	"medium-api/utilities"
+	"strings"
 
 	"github.com/gocolly/colly"
 )
 
+type Markdown interface {
+	ToMarkdown() string
+}
+
+type Element interface {
+	GetName() string
+	ToMarkdown() string
+	addData(map[string][]string)
+}
+
 type Article struct {
-	Markdown
 	Title     string
 	Publisehd string
 	ReadTime  string
@@ -17,19 +27,16 @@ type Article struct {
 }
 
 type P struct {
-	Markdown
 	Name    string
 	Content string
 }
 
 type Title struct {
-	Markdown
 	Name    string
 	Content string
 }
 
 type Image struct {
-	Markdown
 	Name string
 	Id   string
 	Base string
@@ -37,7 +44,6 @@ type Image struct {
 }
 
 type List struct {
-	Markdown
 	Name   string
 	Compts []string
 }
@@ -97,12 +103,85 @@ func (elem *P) addData(m map[string][]string) {
 	// elem.Content = m["content"]
 }
 
-type Markdown struct {
+func (p P) ToMarkdown() string {
+	var sb strings.Builder
+
+	sb.WriteString(p.Content)
+	return sb.String()
+
 }
 
-type Element interface {
-	GetName() string
-	addData(map[string][]string)
+func (i Image) ToMarkdown() string {
+	var sb strings.Builder
+
+	lin := i.Base + i.Id
+
+	sb.WriteString(fmt.Sprintf("![%s](%s)", i.Alt, lin))
+	return sb.String()
+
+}
+
+func (t Title) ToMarkdown() string {
+	var sb strings.Builder
+
+	switch t.Name {
+	case "h1":
+		sb.WriteString("# ")
+
+	case "h2":
+		sb.WriteString("## ")
+
+	case "h3":
+		sb.WriteString("### ")
+
+	case "h4":
+		sb.WriteString("#### ")
+	}
+
+	sb.WriteString(t.Content)
+
+	return sb.String()
+
+}
+
+func (l List) ToMarkdown() string {
+	var sb strings.Builder
+	var prefix string
+
+	switch l.Name {
+	case "ol":
+		prefix = "numeric"
+
+	case "ul":
+		prefix = ""
+
+	}
+
+	for i, v := range l.Compts {
+		if prefix == "numeric" {
+			sb.WriteString(fmt.Sprintf("%v. %s", i, v))
+		} else {
+			sb.WriteString(fmt.Sprintf("- %s", v))
+		}
+	}
+
+	return sb.String()
+}
+
+func (p PlaceHolder) ToMarkdown() string {
+	return "null"
+}
+
+func (a Article) ToMarkdown() string {
+	var sb strings.Builder
+
+	for _, v := range a.Content {
+		sb.WriteString(v.ToMarkdown())
+		sb.WriteString("\n")
+
+	}
+
+	return sb.String()
 }
 
 func createElement(elem *colly.HTMLElement) (Element, error) {

@@ -85,6 +85,12 @@ func main() {
 
 		fmt.Printf("\n\n")
 
+		err := os.WriteFile("Article.md", []byte(art.ToMarkdown()), 0644) // 0644 is a common permission setting allowing reading for everyone and full write access to the owner of the file.
+		if err != nil {
+			// Handle the error here
+			fmt.Println("Error writing to file:", err)
+		}
+
 	})
 
 	// c.Visit("https://medium.com/coinsbench/uniswap-whats-new-5e41307c97a2")
