@@ -20,7 +20,7 @@ func GetArticle(link string) elements.Article {
 
 		var permElems []string
 
-		// add permite elements
+		// add permited elements
 		permElems = append(permElems, "h1")
 		permElems = append(permElems, "h2")
 		permElems = append(permElems, "h3")
@@ -33,8 +33,6 @@ func GetArticle(link string) elements.Article {
 		h.ForEach("*:not(:first-child)", func(i int, e *colly.HTMLElement) {
 
 			if utilities.StringInArray(e.Name, permElems) {
-				// fmt.Printf("e with number %v: %v\n", i, e.Name)
-				// fmt.Printf("%s \n\n", trimMoreThanOneSpace(e.Text))
 
 				result := elements.ExtractDataArticle(e, i)
 
@@ -58,6 +56,7 @@ func GetArticle(link string) elements.Article {
 
 	})
 
+	// eliminate this and create testfile
 	if link == "test" {
 		go utilities.SpinUp("testing")
 		c.Visit("http://localhost:8080/")
