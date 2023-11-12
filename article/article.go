@@ -29,12 +29,13 @@ func GetArticle(link string) elements.Article {
 		permElems = append(permElems, "p")
 		permElems = append(permElems, "li")
 		permElems = append(permElems, "img")
+		permElems = append(permElems, "blockquote")
 
-		h.ForEach("*:not(:first-child)", func(i int, e *colly.HTMLElement) {
+		h.ForEach("*:not(:first-child)", func(_ int, e *colly.HTMLElement) {
 
 			if utilities.StringInArray(e.Name, permElems) {
 
-				result := elements.ExtractDataArticle(e, i)
+				result := elements.ExtractDataArticle(e)
 
 				if result.GetName() != "" {
 					art.Content = append(art.Content, result)

@@ -101,6 +101,12 @@ func (a Article) ToMarkdownFile(path string) {
 	fmt.Println("File created at: ", path)
 }
 
+func (b Blockquote) ToMarkdown() string {
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("> %s", b.Content))
+	return sb.String()
+}
+
 func (a Article) ToHtmlFile(path string) {
 
 	err := os.WriteFile(path, []byte(a.ToHTML()), 0644) // 0644 is a common permission setting allowing reading for everyone and full write access to the owner of the file.
@@ -120,7 +126,13 @@ func (p P) ToHTML() string {
 	sb.WriteString(fmt.Sprintf("<p>%s</p>", p.Content))
 
 	return sb.String()
+}
 
+func (b Blockquote) ToHTML() string {
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("<blockquote>%s</blockquote>", b.Content))
+
+	return sb.String()
 }
 
 func (i Image) ToHTML() string {
