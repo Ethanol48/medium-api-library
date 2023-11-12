@@ -1,7 +1,7 @@
 package main
 
 import (
-	"os"
+	"fmt"
 
 	"github.com/Ethanol48/medium-api/article"
 )
@@ -12,10 +12,10 @@ func main() {
 
 	art := article.GetArticle("test")
 
-	wd, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-	art.ToHtmlFile(wd + "/Test.html")
+	// wd, err := os.Getwd()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	fmt.Printf("art.ToMarkdown(): %v\n", art.ToHTML())
 
 }
