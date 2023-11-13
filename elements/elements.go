@@ -13,7 +13,6 @@ type Element interface {
 	GetName() string
 	ToMarkdown() string
 	ToHTML() string
-	// addData(map[string][]string)
 }
 
 type Article struct {
@@ -22,6 +21,8 @@ type Article struct {
 	ReadTime  string
 	Content   []Element
 }
+
+// TODO: elements: 'code blocks', gists, parse through text for code, strong, italic text or links
 
 type P struct {
 	Name    string
