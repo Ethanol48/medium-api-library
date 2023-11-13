@@ -7,6 +7,9 @@ import (
 	"github.com/gocolly/colly"
 )
 
+// whitelist of elements to be included in the article
+var permElems []string = []string{"h1", "h2", "h3", "ul", "ol", "p", "li", "img", "blockquote"}
+
 func GetArticle(link string) elements.Article {
 
 	c := colly.NewCollector()
@@ -16,26 +19,22 @@ func GetArticle(link string) elements.Article {
 
 	c.OnHTML("section > div > div:nth-child(2) > div > div", func(h *colly.HTMLElement) {
 
-		var header *colly.HTMLElement
-
-		var permElems []string
-
-		// add permited elements
-		permElems = append(permElems, "h1")
-		permElems = append(permElems, "h2")
-		permElems = append(permElems, "h3")
-		permElems = append(permElems, "ul")
-		permElems = append(permElems, "ol")
-		permElems = append(permElems, "p")
-		permElems = append(permElems, "li")
-		permElems = append(permElems, "img")
-		permElems = append(permElems, "blockquote")
-
 		h.ForEach("*:not(:first-child)", func(_ int, e *colly.HTMLElement) {
 
+			// don't include "Follow" button
 			if utilities.StringInArray(e.Name, permElems) {
 
-				result := elements.ExtractDataArticle(e)
+				var result elements.Element
+
+				if utilities.TrimMoreThanOneSpace(e.Text) == "Follow" {
+					result = &elements.PlaceHolder{
+						Name: "",
+						Elem: *e,
+					}
+
+				} else {
+					result = elements.ExtractDataArticle(e)
+				}
 
 				if result.GetName() != "" {
 					art.Content = append(art.Content, result)
@@ -47,6 +46,7 @@ func GetArticle(link string) elements.Article {
 
 		})
 
+		var header *colly.HTMLElement
 		headerSelection := h.DOM.Find("div").First()
 		header = &colly.HTMLElement{}
 		header.DOM = headerSelection
