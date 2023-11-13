@@ -17,7 +17,7 @@ type Element interface {
 
 type Article struct {
 	Title     string
-	Publisehd string
+	Published string
 	ReadTime  string
 	Content   []Element
 }

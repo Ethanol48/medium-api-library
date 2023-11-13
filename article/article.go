@@ -53,7 +53,7 @@ func GetArticle(link string) elements.Article {
 
 		art.Title = header.ChildText(`h1[data-testid="storyTitle"]`)
 		art.ReadTime = header.ChildText(`span[data-testid="storyReadTime"]`)
-		art.Publisehd = header.ChildText(`span[data-testid="storyPublishDate"]`)
+		art.Published = header.ChildText(`span[data-testid="storyPublishDate"]`)
 
 	})
 
