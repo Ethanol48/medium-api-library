@@ -60,7 +60,7 @@ func GetArticle(link string) elements.Article {
 	// eliminate this and create testfile
 	if link == "test" {
 		go utilities.SpinUp("testing")
-		c.Visit("http://localhost:8080/")
+		c.Visit("http://localhost:8080/list")
 	} else {
 		c.Visit(link)
 	}

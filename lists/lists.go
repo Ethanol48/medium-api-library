@@ -1,3 +1,73 @@
 package lists
 
-// TODO: add support for obtaining articles ids from user
+import (
+	"strings"
+
+	"github.com/Ethanol48/medium-api/utilities"
+	"github.com/gocolly/colly"
+)
+
+// TODO: support for returning 'normal' link
+type list struct {
+	Title   string
+	Summary string
+	Url     string
+}
+
+// Gets a maximum of 10 artciles in a list in medium.com
+func GetArticlesInList(link string) []list {
+	listArticles := make([]list, 0)
+	c := colly.NewCollector()
+	var baseUrl string
+
+	c.OnRequest(func(r *colly.Request) {
+
+		baseUrl = r.URL.Host
+
+	})
+
+	c.OnHTML("article", func(h *colly.HTMLElement) {
+
+		// The Url for the article is the second parent of the h2 element
+		var artUrl *colly.HTMLElement
+		var url string
+
+		// find h2 element
+		artUrlSelection := h.DOM.Find("h2").First()
+		artUrl = &colly.HTMLElement{}
+		artUrl.DOM = artUrlSelection
+		artUrl.DOM = artUrl.DOM.Parent().Parent().Parent()
+
+		href, exists := artUrl.DOM.Find("a").First().Attr("href")
+		if !exists {
+			url = "The link could not be found"
+		} else {
+			path := strings.Split(href, "?source")[0]
+			url = "https://" + baseUrl + path
+
+		}
+
+		// get summary if it exists
+		summ := artUrl.DOM.Find("p").First().Text()
+
+		l := list{
+			Title:   h.ChildText("h2"),
+			Summary: summ,
+			Url:     url,
+		}
+
+		listArticles = append(listArticles, l)
+	})
+
+	// eliminate this and create testfile
+	if link == "test" {
+		go utilities.SpinUp("testing")
+		c.Visit("http://localhost:8080/list")
+	} else {
+		c.Visit(link)
+	}
+	c.Wait()
+
+	return listArticles
+
+}
