@@ -22,9 +22,17 @@ type Article struct {
 	Content   []Element
 }
 
-// TODO: elements: 'code blocks', gists, parse through text for code, strong, italic text or links
+// TODO: elements:
+// [x] code blocks,
+// [ ] gists,
+// [ ] parse through text for code, strong, italic text or links
 
 type P struct {
+	Name    string
+	Content string
+}
+
+type CodeBlock struct {
 	Name    string
 	Content string
 }
@@ -59,6 +67,7 @@ type PlaceHolder struct {
 /* GetName() */
 
 func (elem *PlaceHolder) GetName() string { return elem.Name }
+func (elem *CodeBlock) GetName() string   { return elem.Name }
 func (elem *List) GetName() string        { return elem.Name }
 func (elem *Image) GetName() string       { return elem.Name }
 func (elem *Title) GetName() string       { return elem.Name }
@@ -97,6 +106,15 @@ func createElement(elem *colly.HTMLElement) (Element, error) {
 		}
 
 		return &i, nil
+
+	case "pre": // this is a codeblock
+
+		cb := CodeBlock{
+			Name:    elem.Name,
+			Content: elem.Text, // In the future improve this method to reflect breaking lines
+		}
+
+		return &cb, nil
 
 	case "ol":
 

@@ -8,7 +8,7 @@ import (
 )
 
 // whitelist of elements to be included in the article
-var permElems []string = []string{"h1", "h2", "h3", "ul", "ol", "p", "li", "img", "blockquote"}
+var permElems []string = []string{"h1", "h2", "h3", "ul", "ol", "p", "li", "img", "blockquote", "pre"}
 
 func GetArticle(link string) elements.Article {
 

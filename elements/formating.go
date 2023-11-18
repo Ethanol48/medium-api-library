@@ -16,6 +16,16 @@ func (p P) ToMarkdown() string {
 
 }
 
+func (cb CodeBlock) ToMarkdown() string {
+	var sb strings.Builder
+
+	sb.WriteString("```\n")
+	sb.WriteString(cb.Content)
+	sb.WriteString("\n```")
+	return sb.String()
+
+}
+
 func (i Image) ToMarkdown() string {
 	var sb strings.Builder
 
@@ -124,6 +134,13 @@ func (a Article) ToHtmlFile(path string) {
 func (p P) ToHTML() string {
 	var sb strings.Builder
 	sb.WriteString(fmt.Sprintf("<p>%s</p>", p.Content))
+
+	return sb.String()
+}
+
+func (cb CodeBlock) ToHTML() string {
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("<pre>%s</pre>", cb.Content))
 
 	return sb.String()
 }

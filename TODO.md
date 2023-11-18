@@ -10,8 +10,9 @@
   - [x] To Markdown File
   - [x] To HTML File
   - [ ] Download the images from articles
+  - [ ] Link Validation
 
 
 ### API
   - [ ] API it-self 
-  - [ ] Create routes
+    - [ ] Create routes
