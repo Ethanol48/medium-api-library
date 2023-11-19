@@ -1,6 +1,8 @@
 package article
 
 import (
+	"strings"
+
 	"github.com/Ethanol48/medium-api-library/elements"
 	"github.com/Ethanol48/medium-api-library/utilities"
 
@@ -56,6 +58,16 @@ func GetArticle(link string) elements.Article {
 		art.Title = header.ChildText(`h1[data-testid="storyTitle"]`)
 		art.ReadTime = header.ChildText(`span[data-testid="storyReadTime"]`)
 		art.Published = header.ChildText(`span[data-testid="storyPublishDate"]`)
+
+	})
+
+	// take all anchor tags where href begins with ...
+	c.OnHTML(`a[href^="https://medium.com/tag"]`, func(h *colly.HTMLElement) {
+
+		// clean the link and eliminate the sufic of the link to get the tag
+		str, _ := strings.CutPrefix(strings.Split(h.Attr("href"), "?source=")[0], "https://medium.com/tag/")
+
+		art.Tags = append(art.Tags, str)
 
 	})
 

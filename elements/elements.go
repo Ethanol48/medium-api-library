@@ -20,6 +20,7 @@ type Article struct {
 	Published string
 	ReadTime  string
 	Content   []Element
+	Tags      []string
 }
 
 // TODO: elements:
