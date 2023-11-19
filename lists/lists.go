@@ -3,7 +3,7 @@ package lists
 import (
 	"strings"
 
-	"github.com/Ethanol48/medium-api/utilities"
+	"github.com/Ethanol48/medium-api-library/utilities"
 	"github.com/gocolly/colly"
 )
 
