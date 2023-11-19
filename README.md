@@ -10,11 +10,10 @@ The end goal is to create a simple REST API to obtain data programatically
 This is a personal project born because I wanted to extract information about my
 articles in medium.com to import it into my personal website.
 
-So I was searching for an alternative, until I encountered an unoficial Medium API that had a lot of 
+So I was searching for an alternative from the official medium API as it is deprecated, until I encountered an unoficial Medium API that had a lot of 
 features, but I had some problems with it, first in not open-sourced, you need to register in a website 
 called rapidAPI, in the free plan you have 100 free calls, and after that it becomes <strong>4 cents</strong> per call!!, 
-by the way that it's structured you need to make 3 calls to have the publications of a user, if you need to parse
-through a list of the authors of your company, the bill could ramp up pretty quickly.
+After some calls the bill could be  
 
 I know that this is very useful and can make money with this but I don't think this
 is the way to do this. 
@@ -22,5 +21,10 @@ is the way to do this.
 
 ## This is a Project under development 🔧
 
-This is not production ready, the endgoal is to create different endpoints to obtain
-Articles, Users, Topics and Lists
+There's some features to be implemented in the library, like obtaining tags of the topics of the user and the articles.
+
+## Collaboration
+
+Are you a fanatic of open-source? And want to build something awesome?
+
+PR's are welcome, docs, implementation, every help is welcomed.
