@@ -8,7 +8,9 @@ import (
 )
 
 // whitelist of elements to be included in the article
-var permElems []string = []string{"h1", "h2", "h3", "ul", "ol", "p", "li", "img", "blockquote", "pre"}
+var permElems []string = []string{
+	"h1", "h2", "h3", "h4", "ul", "ol", "p", "img", "blockquote", "pre",
+}
 
 func GetArticle(link string) elements.Article {
 
@@ -60,7 +62,7 @@ func GetArticle(link string) elements.Article {
 	// eliminate this and create testfile
 	if link == "test" {
 		go utilities.SpinUp("testing")
-		c.Visit("http://localhost:8080/list")
+		c.Visit("http://localhost:8080/article")
 	} else {
 		c.Visit(link)
 	}

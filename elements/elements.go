@@ -172,12 +172,6 @@ func createElement(elem *colly.HTMLElement) (Element, error) {
 			Content: utilities.TrimMoreThanOneSpace(elem.Text),
 		}, nil
 
-	case "li":
-		return &PlaceHolder{
-			Name: "",
-			Elem: *elem,
-		}, nil
-
 	case "blockquote":
 		return &Blockquote{
 			Name:    elem.Name,
