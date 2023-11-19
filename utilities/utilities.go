@@ -19,7 +19,7 @@ func StringInArray(s string, array []string) bool {
 
 func TrimMoreThanOneSpace(s string) string {
 	str := strings.ReplaceAll(s, "  ", "")
-	str = strings.ReplaceAll(str, "\n", "")
+	str = strings.ReplaceAll(str, "\n", " ")
 
 	return str
 }
