@@ -8,15 +8,20 @@ import (
 )
 
 // TODO: support for returning 'normal' link
-type list struct {
+type ArticleSimple struct {
 	Title   string
 	Summary string
 	Url     string
 }
 
+type list struct {
+	SimpleArticles []ArticleSimple
+}
+
 // Gets a maximum of 10 artciles in a list in medium.com
-func GetArticlesInList(link string) []list {
-	listArticles := make([]list, 0)
+func GetArticlesInList(link string) list {
+	var l list
+
 	c := colly.NewCollector()
 	var baseUrl string
 
@@ -50,13 +55,11 @@ func GetArticlesInList(link string) []list {
 		// get summary if it exists
 		summ := artUrl.DOM.Find("p").First().Text()
 
-		l := list{
+		l.SimpleArticles = append(l.SimpleArticles, ArticleSimple{
 			Title:   h.ChildText("h2"),
 			Summary: summ,
 			Url:     url,
-		}
-
-		listArticles = append(listArticles, l)
+		})
 	})
 
 	// eliminate this and create testfile
@@ -68,6 +71,9 @@ func GetArticlesInList(link string) []list {
 	}
 	c.Wait()
 
-	return listArticles
+	return l
+}
+
+func GetListOfUser(link string) /* []list */ {
 
 }
