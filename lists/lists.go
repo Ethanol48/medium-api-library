@@ -18,6 +18,7 @@ type list struct {
 	SimpleArticles []ArticleSimple
 }
 
+// TODO: Investigate network trafic to find other way to get more data
 // Gets a maximum of 10 artciles in a list in medium.com
 func GetArticlesInList(link string) list {
 	var l list
