@@ -76,5 +76,5 @@ func GetArticlesInList(link string) list {
 }
 
 func GetListOfUser(link string) /* []list */ {
-
+	// TODO
 }
