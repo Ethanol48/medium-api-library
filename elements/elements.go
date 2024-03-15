@@ -3,6 +3,7 @@ package elements
 import (
 	"errors"
 	"fmt"
+	"html"
 	"regexp"
 
 	"github.com/Ethanol48/medium-api-library/utilities"
@@ -111,9 +112,27 @@ func createElement(elem *colly.HTMLElement) (Element, error) {
 
 	case "pre": // this is a codeblock
 
+		htmlText, err := elem.DOM.Html()
+		if err != nil {
+
+			return &PlaceHolder{
+				Name: elem.Name,
+				Elem: *elem,
+			}, errors.New("There was an error extracting the HTML from <pre> tag")
+
+		}
+
+		nl := regexp.MustCompile(`<br/>`)
+		htmlText = nl.ReplaceAllString(htmlText, "\n")
+
+		spans := regexp.MustCompile(`<\/?span[^>]*>`)
+		htmlText = spans.ReplaceAllString(htmlText, "")
+
+		htmlText = html.UnescapeString(htmlText)
+
 		cb := CodeBlock{
 			Name:    elem.Name,
-			Content: elem.Text, // In the future improve this method to reflect breaking lines
+			Content: htmlText, // In the future improve this method to reflect breaking lines
 		}
 
 		return &cb, nil
@@ -209,14 +228,17 @@ func ExtractDataArticle(elem *colly.HTMLElement) Element {
 
 // Returns element preserving inner tags (strong, a, ...)
 func CleanElement(elem *colly.HTMLElement) string {
-	s, err := elem.DOM.Html()
+	text, err := elem.DOM.Html()
 	if err != nil {
 		errors.New("Error extracting the html from element")
 	}
 
+	nl := regexp.MustCompile(`<br/>`)
+	text = nl.ReplaceAllString(text, "\n")
+
 	// eliminate attributes
 	re := regexp.MustCompile(`(class|rel|target)="[^"]*"`)
-	cleanedHtml := re.ReplaceAllString(s, " ")
+	cleanedHtml := re.ReplaceAllString(text, " ")
 
 	return utilities.TrimMoreThanOneSpace(cleanedHtml)
 
