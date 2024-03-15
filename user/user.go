@@ -10,6 +10,7 @@ import (
 
 type UserMetadata struct {
 	Name           string
+	About          string
 	Desc           string
 	Followers      string
 	Following      string
@@ -33,6 +34,11 @@ func GetUserMetadata(link string) UserMetadata {
 
 		u.Followers = strings.Split(h.Text, " ")[0]
 
+	})
+
+	// Description
+	c.OnHTML("body > div > div > div > div > div > div > div > div > div > div > div > div > p > span", func(h *colly.HTMLElement) {
+		u.Desc = strings.TrimSpace(h.Text)
 	})
 
 	// Following
@@ -60,13 +66,13 @@ func GetUserMetadata(link string) UserMetadata {
 
 	})
 
-	// Description
+	// About
 	c.OnHTML("h4", func(h *colly.HTMLElement) {
 
-		var desc *colly.HTMLElement
-		descSelection := h.DOM.Parent().Parent().Find("div").First().Find("p")
-		desc = &colly.HTMLElement{}
-		desc.DOM = descSelection
+		var about *colly.HTMLElement
+		aboutSelection := h.DOM.Parent().Parent().Find("div").First().Find("p")
+		about = &colly.HTMLElement{}
+		about.DOM = aboutSelection
 
 		// TODO: review for returning html for including links
 		// test, err := desc.DOM.Html()
@@ -76,12 +82,12 @@ func GetUserMetadata(link string) UserMetadata {
 
 		// fmt.Printf("test: %v\n", test)
 
-		descText := desc.DOM.Text()
+		aboutText := about.DOM.Text()
 
 		// this is for the case of scrapping your own profile
-		descText, _ = strings.CutSuffix(descText, "Edit")
+		aboutText, _ = strings.CutSuffix(aboutText, "Edit")
 
-		u.Desc = descText
+		u.About = strings.TrimSpace(aboutText)
 	})
 
 	c.Visit(link)
