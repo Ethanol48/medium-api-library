@@ -3,6 +3,7 @@ package elements
 import (
 	"errors"
 	"fmt"
+	"regexp"
 
 	"github.com/Ethanol48/medium-api-library/utilities"
 
@@ -125,7 +126,8 @@ func createElement(elem *colly.HTMLElement) (Element, error) {
 		}
 
 		elem.ForEach("li", func(_ int, h *colly.HTMLElement) {
-			l.Compts = append(l.Compts, utilities.TrimMoreThanOneSpace(h.Text))
+			li := CleanElement(h)
+			l.Compts = append(l.Compts, li)
 		})
 
 		return &l, nil
@@ -138,7 +140,8 @@ func createElement(elem *colly.HTMLElement) (Element, error) {
 		}
 
 		elem.ForEach("li", func(_ int, h *colly.HTMLElement) {
-			l.Compts = append(l.Compts, utilities.TrimMoreThanOneSpace(h.Text))
+			li := CleanElement(h)
+			l.Compts = append(l.Compts, li)
 		})
 
 		return &l, nil
@@ -146,37 +149,40 @@ func createElement(elem *colly.HTMLElement) (Element, error) {
 	case "h1":
 		return &Title{
 			Name:    elem.Name,
-			Content: utilities.TrimMoreThanOneSpace(elem.Text),
+			Content: CleanElement(elem),
 		}, nil
 
 	case "h2":
 		return &Title{
 			Name:    elem.Name,
-			Content: utilities.TrimMoreThanOneSpace(elem.Text),
+			Content: CleanElement(elem),
 		}, nil
 
 	case "h3":
 		return &Title{
 			Name:    elem.Name,
-			Content: utilities.TrimMoreThanOneSpace(elem.Text),
+			Content: CleanElement(elem),
 		}, nil
 
 	case "h4":
 		return &Title{
 			Name:    elem.Name,
-			Content: utilities.TrimMoreThanOneSpace(elem.Text),
+			Content: CleanElement(elem),
 		}, nil
 
 	case "p":
+
 		return &P{
 			Name:    elem.Name,
-			Content: utilities.TrimMoreThanOneSpace(elem.Text),
+			Content: CleanElement(elem),
 		}, nil
+
+		// return CleanElement(elem), nil
 
 	case "blockquote":
 		return &Blockquote{
 			Name:    elem.Name,
-			Content: utilities.TrimMoreThanOneSpace(elem.Text),
+			Content: CleanElement(elem),
 		}, nil
 
 	default:
@@ -198,5 +204,20 @@ func ExtractDataArticle(elem *colly.HTMLElement) Element {
 	}
 
 	return e
+
+}
+
+// Returns element preserving inner tags (strong, a, ...)
+func CleanElement(elem *colly.HTMLElement) string {
+	s, err := elem.DOM.Html()
+	if err != nil {
+		errors.New("Error extracting the html from element")
+	}
+
+	// eliminate attributes
+	re := regexp.MustCompile(`(class|rel|target)="[^"]*"`)
+	cleanedHtml := re.ReplaceAllString(s, " ")
+
+	return utilities.TrimMoreThanOneSpace(cleanedHtml)
 
 }
