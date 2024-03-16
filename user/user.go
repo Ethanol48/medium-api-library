@@ -57,7 +57,7 @@ func GetUserMetadata(link string) UserMetadata {
 
 	})
 
-	// Twitter
+	// Mastodon
 	c.OnHTML(`a[href^="https://me.dm"]`, func(h *colly.HTMLElement) {
 
 		tmp := h.DOM.AttrOr("href", "Not Found")
