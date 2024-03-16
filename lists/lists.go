@@ -57,19 +57,14 @@ func GetArticlesInList(link string) list {
 		summ := artUrl.DOM.Find("p").First().Text()
 
 		l.SimpleArticles = append(l.SimpleArticles, ArticleSimple{
-			Title:   h.ChildText("h2"),
-			Summary: summ,
+			Title:   utilities.TrimMoreThanOneSpace(h.ChildText("h2")),
+			Summary: utilities.TrimMoreThanOneSpace(summ),
 			Url:     url,
 		})
 	})
 
-	// eliminate this and create testfile
-	if link == "test" {
-		go utilities.SpinUp("testing")
-		c.Visit("http://localhost:8080/list")
-	} else {
-		c.Visit(link)
-	}
+	c.Visit(link)
+
 	c.Wait()
 
 	return l
