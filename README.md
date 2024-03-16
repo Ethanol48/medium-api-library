@@ -34,3 +34,33 @@ There are some features to be implemented in the library, like obtaining tags of
 Are you a fanatic of open-source? And want to build something awesome?
 
 PRs are welcome, docs, implementation, every help is welcomed.
+
+
+</br>
+</br>
+
+## Functionality TODO:
+
+  - [ ] Link Validation
+  - [ ] Articles
+    - [x] Get content of Article
+      - [x] Markdown
+      - [x] HTML
+      - [x] Support for nested elements (strong, italic)
+    - [x] Metadata of Article
+      - [x] Title
+      - [x] Tags / Topics
+    - [ ] Images
+      - [ ] Download Images of Markdown file to local fs
+
+  - [ ] Users
+    - [ ] Top 10 Articles
+    - [ ] Topic of User
+    - [x] Metadata
+  
+  - [x] Lists
+    - [x] Top 10 Articles
+
+### API
+  - [ ] API it-self 
+    - [ ] Create routes
