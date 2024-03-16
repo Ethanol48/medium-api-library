@@ -42,7 +42,7 @@ PRs are welcome, docs, implementation, every help is welcomed.
 ## Functionality TODO:
 
   - [ ] Link Validation
-  - [ ] Articles
+  - [x] Articles
     - [x] Get content of Article
       - [x] Markdown
       - [x] HTML
@@ -50,8 +50,8 @@ PRs are welcome, docs, implementation, every help is welcomed.
     - [x] Metadata of Article
       - [x] Title
       - [x] Tags / Topics
-    - [ ] Images
-      - [ ] Download Images of Markdown file to local fs
+    - [x] Images
+      - [x] Download Images of Markdown file to local fs
 
   - [ ] Users
     - [ ] Top 10 Articles
