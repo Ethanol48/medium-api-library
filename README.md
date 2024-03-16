@@ -51,7 +51,7 @@ PRs are welcome, docs, implementation, every help is welcomed.
       - [x] Title
       - [x] Tags / Topics
     - [x] Images
-      - [x] Download Images of Markdown file to local fs
+      - [x] Download Images of the Markdown file to local fs
 
   - [ ] Users
     - [ ] Top 10 Articles
