@@ -40,6 +40,7 @@ PRs are welcome, docs, implementation, every help is welcomed.
 </br>
 
 ## Functionality TODO:
+  - [ ] Add Docs to functions
 
   - [ ] Link Validation
   - [x] Articles
