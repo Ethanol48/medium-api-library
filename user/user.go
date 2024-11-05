@@ -9,13 +9,13 @@ import (
 // TODO: add support for obtaining top 10 articles of user
 
 type UserMetadata struct {
-	Name           string
-	About          string
-	Desc           string
-	Followers      string
-	Following      string
-	twitterHandle  string
-	mastodonHandle string
+  Name           string /* `json:Name` */
+  About          string /* `json:About` */
+  Desc           string /* `json:Desc` */
+  Followers      string /* `json:Followers` */
+  Following      string /* `json:Following` */
+  twitterHandle  string /* `json:twitterHandle` */
+  mastodonHandle string /* `json:mastodonHandle` */
 }
 
 func GetUserMetadata(link string) UserMetadata {
