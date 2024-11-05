@@ -130,7 +130,6 @@ func (a Article) ToHtmlFile(path string) {
 
 /* HTML */
 
-// can you write for me the ToHTML method squeleton for each type in this file that implements the interface Element
 func (p P) ToHTML() string {
 	var sb strings.Builder
 	sb.WriteString(fmt.Sprintf("<p>%s</p>", p.Content))

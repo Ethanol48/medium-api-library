@@ -32,7 +32,7 @@ func SpinUp(path string) {
 	// Handle all requests by serving a file of the same name.
 	http.Handle("/", fs)
 
-	// Start the server on port 8080 and handle any errors.
+	// Start the server on port 8888 and handle any errors.
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)
