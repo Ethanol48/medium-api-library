@@ -3,5 +3,8 @@ testing
 Article.md
 .vscode/
 
+# air dev
+tmp
+
 # testing markdown files
 output

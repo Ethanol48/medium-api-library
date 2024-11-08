@@ -22,18 +22,13 @@ type ApiResponse struct {
 func main()  {
   mux := http.NewServeMux()
 
-  mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-    w.WriteHeader(200)
-    fmt.Fprint(w, "HealthCheck")
-  })
-
   /* user funcs */
   mux.HandleFunc("GET /user/metadata", func(w http.ResponseWriter, r *http.Request) {
     // url parameter
     usr := r.URL.Query().Get("usr")
     if (usr == "") {
       w.WriteHeader(422)
-      fmt.Fprint(w, "we couldn't find a user in your request :(")
+      fmt.Fprint(w, "we couldn't find the parameter 'usr' in your request")
       return
     }
 
@@ -76,7 +71,7 @@ func main()  {
     link := r.URL.Query().Get("link")
     if (link == "") {
       w.WriteHeader(422)
-      fmt.Fprint(w, "we couldn't find a link in your request :(")
+      fmt.Fprint(w, "we couldn't find the parameter 'link' in your request")
       return
     }
 
@@ -100,7 +95,7 @@ func main()  {
     link := r.URL.Query().Get("link")
     if (link == "") {
       w.WriteHeader(422)
-      fmt.Fprint(w, "we couldn't find a link in your request :(")
+      fmt.Fprint(w, "we couldn't find the parameter 'link' in your request")
       return
     }
 
@@ -121,7 +116,7 @@ func main()  {
     link := r.URL.Query().Get("link")
     if (link == "") {
       w.WriteHeader(422)
-      fmt.Fprint(w, "we couldn't find a link in your request :(")
+      fmt.Fprint(w, "we couldn't find the parameter 'link' in your request")
       return
     }
 
