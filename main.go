@@ -4,45 +4,120 @@ import (
 
 	// "os"
 
+	"html"
 	"fmt"
+	"encoding/json"
+	"net/http"
 
-	"github.com/Ethanol48/medium-api-library/lists"
-	"github.com/Ethanol48/medium-api-library/utilities"
+	"github.com/Ethanol48/medium-api-library/article"
+	"github.com/Ethanol48/medium-api-library/user"
 )
 
-// var selector string = `#root > div:nth-child(1) > div:nth-child(5) > div:nth-child(2) > div:nth-child(3) > article:nth-child(2) > div:nth-child(1) > div:nth-child(1) > section:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)`
+type ApiResponse struct {
+    Message string `json:"message,omitempty"`
+    Data    any    `json:"data,omitempty"` // Use `any` for flexible data types or replace with specific types
+}
 
-func main() {
 
-	// go utilities.SpinUp("testing")
+func main()  {
+  mux := http.NewServeMux()
 
-	// lists.GetArticlesInList("http://localhost:8080/list")
-	lists := lists.GetArticlesInList("test")
+  /* user funcs */
+  mux.HandleFunc("GET /user/metadata", func(w http.ResponseWriter, r *http.Request) {
+    // url parameter
+    usr := r.URL.Query().Get("usr")
+    if (usr == "") {
+      w.WriteHeader(422)
+      fmt.Fprint(w, "we couldn't find a user in your request :(")
+      return
+    }
 
-	lists[0].Summary = utilities.TrimMoreThanOneSpace(lists[0].Summary)
-	lists[0].Title = utilities.TrimMoreThanOneSpace(lists[0].Title)
+    // create a user link
+    userLink := fmt.Sprintf("https://medium.com/%s", usr)
+    metadata := user.GetUserMetadata(userLink)
 
-	fmt.Printf("lists: %#v\n", lists[0])
+    fmt.Printf("metadata: %v\n", metadata)
+  })
 
-	// time.Sleep(12)
 
-	// art := article.GetArticle("https://medium.com/@champudelimon/testing-medium-markdown-f0eb5a7054bc")
-	// fmt.Printf("art.ToMarkdown(): \n%v\n", art.ToMarkdown())
+  /* article funcs */
+  mux.HandleFunc("GET /article/html", func(w http.ResponseWriter, r *http.Request) {
+    // url parameter
+    link := r.URL.Query().Get("link")
+    if (link == "") {
+      w.WriteHeader(422)
+      fmt.Fprint(w, "we couldn't find a link in your request :(")
+      return
+    }
 
-	// lists.GetArticlesInList("https://medium.com/@ethan-rouimi/list/solidity-content-24ad19a2c23d")
+    // TODO: validation for link
+    art := article.GetArticle(link)
 
-	// art := article.GetArticle("https://medium.com/@ethan-rouimi/paypal-usd-et-les-horreurs-des-cbdcs-861f2339304b")
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(200)
 
-	// wd, err := os.Getwd()
-	// if err != nil {
-	// 	panic(err)
-	// }
 
-	// fmt.Printf("art.Title: %v\n", art.Title)
+    resp := ApiResponse{
+      Message: "",
+      Data: html.UnescapeString(art.ToHTML()),
+    }
 
-	// // art.ToMarkdownFile(wd + "/output/article.md")
-	// article.GetImagesFromMarkdown(wd + "/output/article.md")
+    json.NewEncoder(w).Encode(resp)
+  })
 
-	// article.DownloadImage("https://miro.medium.com/v2/resize:fit:640/0*YwKmtuNmHrw5FVVU")
+  mux.HandleFunc("GET /article/markdown", func(w http.ResponseWriter, r *http.Request) {
+    // url parameter
+    link := r.URL.Query().Get("link")
+    if (link == "") {
+      w.WriteHeader(422)
+      fmt.Fprint(w, "we couldn't find a link in your request :(")
+      return
+    }
 
+    // TODO: validation for link
+    art := article.GetArticle(link)
+
+    resp := ApiResponse{
+      Message: "",
+      Data: html.UnescapeString(art.ToMarkdown()),
+    }
+
+    json.NewEncoder(w).Encode(resp)
+  })
+
+  mux.HandleFunc("GET /article/metadata", func(w http.ResponseWriter, r *http.Request) {
+
+    // url parameter
+    link := r.URL.Query().Get("link")
+    if (link == "") {
+      w.WriteHeader(422)
+      fmt.Fprint(w, "we couldn't find a link in your request :(")
+      return
+    }
+
+    // TODO: validation for link
+    art := article.GetArticle(link)
+
+    type MetadataResponse struct {
+      Title string     `json:"title"`;
+      Tags []string    `json:"tags"`;
+      ReadTime string  `json:"readtime"`;
+      Published string `json:"published"`;
+    }
+
+    resp := MetadataResponse{
+      Title: art.Title,
+      Tags: art.Tags,
+      ReadTime: art.ReadTime,
+      Published: art.Published,
+    }
+
+    json.NewEncoder(w).Encode(resp)
+  })
+
+
+  fmt.Println("Serving api @ http://localhost:8080 !")
+  if err := http.ListenAndServe("localhost:8080", mux); err != nil {
+    fmt.Println(err.Error())
+  }
 }
