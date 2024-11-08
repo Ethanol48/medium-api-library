@@ -22,6 +22,11 @@ type ApiResponse struct {
 func main()  {
   mux := http.NewServeMux()
 
+  mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+    w.WriteHeader(200)
+    fmt.Fprint(w, "HealthCheck")
+  })
+
   /* user funcs */
   mux.HandleFunc("GET /user/metadata", func(w http.ResponseWriter, r *http.Request) {
     // url parameter
@@ -36,7 +41,32 @@ func main()  {
     userLink := fmt.Sprintf("https://medium.com/%s", usr)
     metadata := user.GetUserMetadata(userLink)
 
+
     fmt.Printf("metadata: %v\n", metadata)
+
+    type MetadataResponse struct {
+      Name string     `json:"name"`;
+      Desc string    `json:"desc"`;
+      About string  `json:"about"`;
+      Followers string `json:"followers"`;
+      Following string `json:"following"`;
+    }
+
+    resp := MetadataResponse{
+      Name: metadata.Name,
+      Desc: metadata.Desc,
+      About: metadata.About,
+      Followers: metadata.Followers, 
+      Following: metadata.Following, 
+    }
+
+
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(200)
+
+
+    json.NewEncoder(w).Encode(resp)
+    
   })
 
 
@@ -116,8 +146,8 @@ func main()  {
   })
 
 
-  fmt.Println("Serving api @ http://localhost:8080 !")
-  if err := http.ListenAndServe("localhost:8080", mux); err != nil {
+  fmt.Println("Serving api @ http://0.0.0.0:8080")
+  if err := http.ListenAndServe("0.0.0.0:8080", mux); err != nil {
     fmt.Println(err.Error())
   }
 }

@@ -1,6 +1,6 @@
 module github.com/Ethanol48/medium-api-library
 
-go 1.20
+go 1.23
 
 require github.com/gocolly/colly v1.2.0
 
