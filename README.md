@@ -63,5 +63,11 @@ PRs are welcome, docs, implementation, every help is welcomed.
     - [x] Top 10 Articles
 
 ### API
-  - [ ] API it-self 
-    - [ ] Create routes
+  - [ ] API
+    - [x] Create Article routes
+        - [x] Create metadata route
+        - [x] Create html route
+        - [x] Create markdown route
+    - [ ] Create User routes
+        - [x] Create metadata route
+        - [ ] Create top 10 arts route
