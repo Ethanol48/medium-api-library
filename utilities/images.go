@@ -39,8 +39,7 @@ func GetImagesFromMarkdown(path string) []string {
 
 }
 
-// Takes mardown text and returns it modifying it with the new links
-// the *oldImageTags*
+// Takes a markdown string and changes the images urls tags with new ones
 func ChangeImageLinksInMarkdown(markdownContent string, oldImageTags []string, newLinks []string) (string, error) {
 	// check arrays have same length
 
@@ -127,8 +126,8 @@ func ExtractUrlFromImageTag(imageTag string) string {
 path: path of the Markdown file
 
 This function combines the functionability of multiple functions, it looks for every
-image link in the markdown, it downloads then in the same path as the markdown file
-and modifies the file to instead of pointing to the url the image tags it looks to the local fs
+image link in the markdown, it downloads the image in the same path as the markdown file
+and modifies the file images tag to instead of point to the new downloaded images instead of an url
 */
 func DownloadImagesAndModifyFile(path string) error {
 
@@ -165,7 +164,7 @@ func DownloadImagesAndModifyFile(path string) error {
 		panic(err)
 	}
 
-	// call ChangeLinksInMarkdown to get new Markdown
+	// call ChangeLinksInMarkdown to get new Markdown text
 	newMarkdownContent, err := ChangeImageLinksInMarkdown(string(markdownContent), imageTags, newUrls)
 	if err != nil {
 		fmt.Println("Error changing markdownContent:", err)
